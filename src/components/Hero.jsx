@@ -37,7 +37,7 @@ const Hero = () => {
 
             <button
               onClick={() => navigate("/products")}
-              className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-3 rounded-full font-semibold transition duration-300 shadow-lg hover:scale-105"
+              className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-3 rounded-full font-semibold transition duration-300 shadow-lg hover:scale-105 cursor-pointer "
             >
               Shop Now
             </button>

@@ -3,7 +3,7 @@ import { CartContext } from "../context/CartContext";
 import { FaHeart } from "react-icons/fa";
 import { useLocation } from "react-router-dom";
 
-// 🔥 IMPORT ALL IMAGES (example — tu badha add kar)
+// 🔥 IMPORT IMAGES
 import apple from "../assets/apple.png";
 import banana from "../assets/banana (1).png";
 import grapes from "../assets/grapes (1).png";
@@ -24,16 +24,23 @@ import shrimp from "../assets/shrimp (1).png";
 import tofu from "../assets/tofu (1).png";
 
 const Products = () => {
-  const { addToCart, addToWishlist } = useContext(CartContext);
+  const {
+    addToCart,
+    removeFromCart,
+    addToWishlist,
+    cart,
+    wishlist,
+  } = useContext(CartContext);
 
   const location = useLocation();
-  const query = new URLSearchParams(location.search);
-  const category = query.get("category");
 
-  // 🔥 FULL PRODUCT DATA (extend karo easily)
+  // 🔍 URL PARAMS
+  const queryParams = new URLSearchParams(location.search);
+  const category = queryParams.get("category");
+  const search = queryParams.get("search")?.toLowerCase() || "";
+
+  // 🔥 PRODUCT DATA
   const allProducts = [
-
-    // 🍎 FRUITS
     { id: 1, name: "Apple", price: 100, img: apple, category: "fruits" },
     { id: 2, name: "Banana", price: 50, img: banana, category: "fruits" },
     { id: 3, name: "Grapes", price: 80, img: grapes, category: "fruits" },
@@ -41,69 +48,109 @@ const Products = () => {
     { id: 5, name: "Pineapple", price: 90, img: pineapple, category: "fruits" },
     { id: 6, name: "Strawberry", price: 150, img: strawberry, category: "fruits" },
 
-    // 🥛 DAIRY
     { id: 20, name: "Milk", price: 60, img: milk, category: "dairy" },
     { id: 21, name: "Cheese", price: 120, img: cheese, category: "dairy" },
     { id: 22, name: "Yogurt", price: 80, img: yogurt, category: "dairy" },
     { id: 23, name: "Butter", price: 110, img: butter, category: "dairy" },
     { id: 24, name: "Eggs", price: 90, img: eggs, category: "dairy" },
 
-    // 🍗 MEAT
     { id: 40, name: "Beef", price: 300, img: beef, category: "meat" },
     { id: 41, name: "Chicken", price: 200, img: chicken, category: "meat" },
     { id: 42, name: "Fish", price: 250, img: fish, category: "meat" },
     { id: 43, name: "Shrimp", price: 280, img: shrimp, category: "meat" },
     { id: 44, name: "Tofu", price: 150, img: tofu, category: "meat" },
-
   ];
 
-  // 🔥 FILTER LOGIC
-  const filtered = category
-    ? allProducts.filter((item) => item.category === category)
-    : allProducts;
+  // 🔥 FILTER
+  let filtered = allProducts;
+
+  if (category) {
+    filtered = filtered.filter((item) => item.category === category);
+  }
+
+  if (search) {
+    filtered = filtered.filter((item) =>
+      item.name.toLowerCase().includes(search)
+    );
+  }
 
   return (
     <div className="max-w-[1400px] mx-auto px-6 py-16">
 
       <h1 className="text-3xl font-bold mb-10 capitalize">
-        {category ? category : "All Products"}
+        {search
+          ? `Search Results for "${search}"`
+          : category
+          ? category
+          : "All Products"}
       </h1>
 
       <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-8">
-        {filtered.map((item) => (
-          <div
-            key={item.id}
-            className="bg-white p-5 rounded-xl shadow-md hover:shadow-xl transition"
-          >
 
-            <img
-              src={item.img}
-              alt={item.name}
-              className="h-[150px] mx-auto mb-4 object-contain"
-            />
+        {filtered.length > 0 ? (
+          filtered.map((item) => {
+            const cartItem = cart.find((p) => p.id === item.id);
+            const quantity = cartItem ? cartItem.qty : 0;
 
-            <h3 className="font-bold text-lg">{item.name}</h3>
-            <p className="text-orange-500 font-semibold">₹{item.price}</p>
+            // ❤️ FIX HERE
+            const isInWishlist = wishlist.some((p) => p.id === item.id);
 
-            <div className="flex justify-between mt-4">
-
-              <FaHeart
-                className="cursor-pointer hover:text-red-500"
-                onClick={() => addToWishlist(item)}
-              />
-
-              <button
-                onClick={() => addToCart(item)}
-                className="bg-orange-500 text-white px-4 py-2 rounded-md"
+            return (
+              <div
+                key={item.id}
+                className="bg-white p-5 rounded-xl shadow-md hover:shadow-xl transition"
               >
-                Add to Cart
-              </button>
+                <img
+                  src={item.img}
+                  alt={item.name}
+                  className="h-[150px] mx-auto mb-4 object-contain"
+                />
 
-            </div>
-          </div>
-        ))}
+                <h3 className="font-bold text-lg">{item.name}</h3>
+                <p className="text-orange-500 font-semibold">
+                  ₹{item.price}
+                </p>
+
+                <div className="flex justify-between mt-4">
+
+                  {/* ❤️ FIXED HEART */}
+                  <FaHeart
+                    className={`cursor-pointer text-lg ${
+                      isInWishlist
+                        ? "text-red-500"
+                        : "text-black hover:text-red-400"
+                    }`}
+                    onClick={() => addToWishlist(item)}
+                  />
+
+                  {quantity === 0 ? (
+                    <button
+                      onClick={() => addToCart(item)}
+                      className="bg-green-200 text-green-800 px-4 py-2 rounded-md font-semibold"
+                    >
+                      ADD
+                    </button>
+                  ) : (
+                    <div className="flex items-center gap-3 bg-green-200 text-green-900 px-3 py-2 rounded-md font-semibold">
+                      <button onClick={() => removeFromCart(item.id)}>
+                        -
+                      </button>
+                      <span>{quantity}</span>
+                      <button onClick={() => addToCart(item)}>+</button>
+                    </div>
+                  )}
+
+                </div>
+              </div>
+            );
+          })
+        ) : (
+          <p className="col-span-4 text-center text-lg">
+            No products found 😢
+          </p>
+        )}
+
       </div>
-
     </div>
   );
 };

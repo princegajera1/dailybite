@@ -1,77 +1,58 @@
-import { createContext, useState, useEffect } from "react";
+import React, { createContext, useState } from "react";
 
 export const CartContext = createContext();
 
-export const CartProvider = ({ children }) => {
-  // 💾 LOAD FROM LOCALSTORAGE
-  const [cart, setCart] = useState(
-    JSON.parse(localStorage.getItem("cart")) || []
-  );
+const CartProvider = ({ children }) => {
 
-  const [wishlist, setWishlist] = useState(
-    JSON.parse(localStorage.getItem("wishlist")) || []
-  );
-
-  // 🔥 DISCOUNT STATE
-  const [discount, setDiscount] = useState(0);
-
-  // 💾 SAVE DATA
-  useEffect(() => {
-    localStorage.setItem("cart", JSON.stringify(cart));
-    localStorage.setItem("wishlist", JSON.stringify(wishlist));
-  }, [cart, wishlist]);
+  const [cart, setCart] = useState([]);
+  const [wishlist, setWishlist] = useState([]);
 
   // 🛒 ADD TO CART
   const addToCart = (product) => {
-    const exist = cart.find((item) => item.id === product.id);
+    setCart((prev) => {
+      const exist = prev.find((item) => item.id === product.id);
 
-    if (exist) {
-      setCart(
-        cart.map((item) =>
+      if (exist) {
+        return prev.map((item) =>
           item.id === product.id
             ? { ...item, qty: item.qty + 1 }
             : item
-        )
-      );
-    } else {
-      setCart([...cart, { ...product, qty: 1 }]);
-    }
+        );
+      } else {
+        return [...prev, { ...product, qty: 1 }];
+      }
+    });
   };
 
-  // ➕➖ QUANTITY
-  const increaseQty = (id) => {
-    setCart(
-      cart.map((item) =>
-        item.id === id ? { ...item, qty: item.qty + 1 } : item
-      )
-    );
-  };
-
-  const decreaseQty = (id) => {
-    setCart(
-      cart
-        .map((item) =>
-          item.id === id ? { ...item, qty: item.qty - 1 } : item
-        )
-        .filter((item) => item.qty > 0)
-    );
-  };
-
-  // ❌ REMOVE
+  // ➖ REMOVE FROM CART
   const removeFromCart = (id) => {
-    setCart(cart.filter((item) => item.id !== id));
+    setCart((prev) => {
+      return prev
+        .map((item) =>
+          item.id === id
+            ? { ...item, qty: item.qty - 1 }
+            : item
+        )
+        .filter((item) => item.qty > 0);
+    });
   };
 
-  // ❤️ WISHLIST
+  // ❤️ TOGGLE WISHLIST (ADD + REMOVE)
   const addToWishlist = (product) => {
-    if (!wishlist.find((item) => item.id === product.id)) {
-      setWishlist([...wishlist, product]);
-    }
+    setWishlist((prev) => {
+      const exist = prev.find((item) => item.id === product.id);
+
+      if (exist) {
+        return prev.filter((item) => item.id !== product.id);
+      } else {
+        return [...prev, product];
+      }
+    });
   };
 
-  // 🎯 APPLY DISCOUNT
-  const applyDiscount = () => {
-    setDiscount(0.2); // 20%
+  // 🗑 REMOVE FROM WISHLIST (FOR DUSTBIN ICON)
+  const removeFromWishlist = (id) => {
+    setWishlist((prev) => prev.filter((item) => item.id !== id));
   };
 
   return (
@@ -81,14 +62,13 @@ export const CartProvider = ({ children }) => {
         wishlist,
         addToCart,
         removeFromCart,
-        increaseQty,
-        decreaseQty,
         addToWishlist,
-        discount,
-        applyDiscount,
+        removeFromWishlist, // 🔥 IMPORTANT
       }}
     >
       {children}
     </CartContext.Provider>
   );
 };
+
+export default CartProvider;

@@ -1,11 +1,16 @@
 import React, { useContext, useState } from "react";
 import { CartContext } from "../context/CartContext";
-import { FaTrash, FaShoppingCart } from "react-icons/fa";
+import { FaTrash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
 const Wishlist = () => {
-  const { wishlist, removeFromWishlist, addToCart } =
-    useContext(CartContext);
+  const {
+    wishlist,
+    removeFromWishlist,
+    addToCart,
+    removeFromCart,
+    cart,
+  } = useContext(CartContext);
 
   const [showPopup, setShowPopup] = useState(false);
   const navigate = useNavigate();
@@ -14,7 +19,6 @@ const Wishlist = () => {
     addToCart(item);
     setShowPopup(true);
 
-    // auto hide after 3 sec
     setTimeout(() => {
       setShowPopup(false);
     }, 3000);
@@ -35,51 +39,81 @@ const Wishlist = () => {
             </h3>
           </div>
         ) : (
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-8">
 
-            {wishlist.map((item) => (
-              <div
-                key={item.id}
-                className="bg-white rounded-xl shadow-md p-5 hover:shadow-xl transition group"
-              >
+            {wishlist.map((item) => {
+              const cartItem = cart.find((p) => p.id === item.id);
+              const quantity = cartItem ? cartItem.qty : 0;
 
-                <img
-                  src={item.img}
-                  alt={item.name}
-                  className="h-[160px] mx-auto object-contain mb-4 group-hover:scale-105 transition"
-                />
+              return (
+                <div
+                  key={item.id}
+                  className="bg-white rounded-xl shadow-md p-5 hover:shadow-xl transition group"
+                >
 
-                <h3 className="text-lg font-semibold text-center">
-                  {item.name}
-                </h3>
+                  {/* IMAGE */}
+                  <img
+                    src={item.img}
+                    alt={item.name}
+                    className="h-[160px] mx-auto object-contain mb-4 group-hover:scale-105 transition"
+                  />
 
-                <p className="text-orange-500 font-bold text-center mt-1">
-                  ₹{item.price}
-                </p>
+                  {/* NAME */}
+                  <h3 className="text-lg font-semibold text-center">
+                    {item.name}
+                  </h3>
 
-                <div className="flex justify-between mt-5">
+                  {/* PRICE */}
+                  <p className="text-orange-500 font-bold text-center mt-1">
+                    ₹{item.price}
+                  </p>
 
-                  {/* REMOVE */}
-                  <button
-                    onClick={() => removeFromWishlist(item.id)}
-                    className="text-red-500"
-                  >
-                    <FaTrash />
-                  </button>
+                  {/* ACTIONS */}
+                  <div className="flex justify-between items-center mt-5">
 
-                  {/* ADD */}
-                  <button
-                    onClick={() => handleAdd(item)}
-                    className="bg-orange-500 text-white px-4 py-2 rounded-md flex items-center gap-2 hover:bg-orange-600"
-                  >
-                    <FaShoppingCart />
-                    Add
-                  </button>
+                    {/* 🗑 REMOVE */}
+                    <button
+                      onClick={() => removeFromWishlist(item.id)}
+                      className="text-red-500 text-lg hover:scale-110 transition"
+                    >
+                      <FaTrash />
+                    </button>
+
+                    {/* 🛒 ADD / QUANTITY */}
+                    {quantity === 0 ? (
+                      <button
+                        onClick={() => handleAdd(item)}
+                        className="bg-green-200 text-green-800 px-4 py-2 rounded-md font-semibold hover:bg-green-300 transition"
+                      >
+                        ADD
+                      </button>
+                    ) : (
+                      <div className="flex items-center gap-3 bg-green-200 text-green-900 px-3 py-2 rounded-md font-semibold">
+
+                        <button
+                          onClick={() => removeFromCart(item.id)}
+                          className="text-lg font-bold"
+                        >
+                          -
+                        </button>
+
+                        <span>{quantity}</span>
+
+                        <button
+                          onClick={() => addToCart(item)}
+                          className="text-lg font-bold"
+                        >
+                          +
+                        </button>
+
+                      </div>
+                    )}
+
+                  </div>
 
                 </div>
-
-              </div>
-            ))}
+              );
+            })}
 
           </div>
         )}
@@ -88,7 +122,7 @@ const Wishlist = () => {
 
       {/* 🔥 POPUP */}
       {showPopup && (
-        <div className="fixed bottom-6 right-6 bg-white shadow-xl rounded-xl p-5 w-[260px] animate-slideIn">
+        <div className="fixed bottom-6 right-6 bg-white shadow-xl rounded-xl p-5 w-[260px] z-50">
 
           <p className="text-sm font-semibold text-zinc-800 mb-3">
             ✅ Product added to cart
@@ -98,14 +132,14 @@ const Wishlist = () => {
 
             <button
               onClick={() => navigate("/cart")}
-              className="bg-orange-500 text-white px-3 py-2 rounded-md text-sm"
+              className="bg-orange-500 text-white px-3 py-2 rounded-md text-sm hover:bg-orange-600 transition"
             >
               Go to Cart
             </button>
 
             <button
               onClick={() => setShowPopup(false)}
-              className="border px-3 py-2 rounded-md text-sm"
+              className="border px-3 py-2 rounded-md text-sm hover:bg-gray-100 transition"
             >
               Continue
             </button>

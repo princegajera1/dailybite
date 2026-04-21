@@ -35,7 +35,7 @@ const Navbar = () => {
       <header className="bg-white shadow-sm sticky top-0 z-50">
         <nav className="flex items-center justify-between max-w-[1400px] mx-auto px-6 h-[80px]">
 
-          {/* 🔥 LOGO */}
+          {/* LOGO */}
           <Link
             to="/"
             className="text-2xl md:text-3xl font-bold tracking-wide"
@@ -44,7 +44,7 @@ const Navbar = () => {
             <span className="text-orange-500">B</span>ite
           </Link>
 
-          {/* 🖥 DESKTOP MENU */}
+          {/* DESKTOP MENU */}
           <ul className="hidden md:flex items-center gap-10 font-medium">
             <li>
               <Link to="/" className="hover:text-orange-500 transition">
@@ -63,10 +63,10 @@ const Navbar = () => {
             </li>
           </ul>
 
-          {/* 👉 RIGHT SIDE */}
+          {/* RIGHT SIDE */}
           <div className="flex items-center gap-4">
 
-            {/* 🔍 DESKTOP SEARCH */}
+            {/* SEARCH */}
             <div className="hidden md:flex items-center border border-gray-300 rounded-full px-3 py-1 focus-within:ring-2 focus-within:ring-orange-400">
               <input
                 type="text"
@@ -82,7 +82,7 @@ const Navbar = () => {
               />
             </div>
 
-            {/* ❤️ WISHLIST */}
+            {/* WISHLIST */}
             <Link to="/wishlist" className="relative">
               <FaHeart className="text-xl text-zinc-700 hover:text-orange-500" />
               <span className="absolute -top-2 -right-2 bg-orange-500 text-white text-xs px-1.5 rounded-full">
@@ -90,7 +90,7 @@ const Navbar = () => {
               </span>
             </Link>
 
-            {/* 🛒 CART */}
+            {/* CART */}
             <div
               onClick={() => setCartOpen(true)}
               className="relative cursor-pointer"
@@ -101,7 +101,7 @@ const Navbar = () => {
               </span>
             </div>
 
-            {/* 📱 MOBILE MENU BUTTON */}
+            {/* MOBILE MENU BUTTON */}
             <button
               className="md:hidden text-xl text-zinc-700"
               onClick={() => setMenuOpen(!menuOpen)}
@@ -111,7 +111,7 @@ const Navbar = () => {
           </div>
         </nav>
 
-        {/* 📱 MOBILE MENU */}
+        {/* MOBILE MENU */}
         <div
           className={`md:hidden bg-white shadow-md transition-all duration-300 ${
             menuOpen ? "max-h-[350px] py-4" : "max-h-0 overflow-hidden"
@@ -135,7 +135,7 @@ const Navbar = () => {
             </li>
           </ul>
 
-          {/* 🔍 MOBILE SEARCH */}
+          {/* MOBILE SEARCH */}
           <div className="flex justify-center mt-4">
             <div className="flex items-center border border-gray-300 rounded-full px-3 py-1 w-[80%]">
               <input
@@ -146,16 +146,12 @@ const Navbar = () => {
                 onKeyDown={handleKey}
                 className="outline-none px-2 py-1 text-sm w-full"
               />
-              <FaSearch
-                onClick={handleSearch}
-                className="cursor-pointer"
-              />
+              <FaSearch onClick={handleSearch} className="cursor-pointer" />
             </div>
           </div>
         </div>
       </header>
 
-      {/* 🔥 CART SIDEBAR */}
       <CartSidebar open={cartOpen} setOpen={setCartOpen} />
     </>
   );
