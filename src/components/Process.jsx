@@ -45,7 +45,7 @@ const Process = () => {
           {/* LINE */}
           <div className="absolute left-1/2 -translate-x-1/2 w-[3px] h-full bg-orange-400"></div>
 
-          <div className="flex flex-col gap-20">
+          <div className="flex flex-col gap-20 ">
 
             {steps.map((step, index) => {
               const isActive = active === step.id;
@@ -64,7 +64,7 @@ const Process = () => {
 
                   {/* CONTENT */}
                   <div
-                    className={`w-full md:w-[40%] p-6 rounded-xl transition-all duration-300
+                    className={`w-full md:w-[40%] p-6 rounded-xl transition-all duration-300 cursor-pointer
                     ${
                       isActive
                         ? "bg-orange-50 shadow-xl scale-105"

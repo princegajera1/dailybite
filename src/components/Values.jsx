@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { FaHeart, FaShieldAlt, FaLeaf } from "react-icons/fa";
 import { GiFruitBowl } from "react-icons/gi";
 
-// 🔥 Center Image (change name if needed)
+// 🔥 Center Image
 import basket from "../assets/grocery (1).png";
 
 const Values = () => {
@@ -25,10 +25,9 @@ const Values = () => {
           {/* LEFT SIDE */}
           <div className="space-y-12">
 
-            {/* ITEM */}
             <motion.div
               whileHover={{ scale: 1.05 }}
-              className="flex items-center gap-4"
+              className="flex items-center gap-4 cursor-pointer"
             >
               <div className="bg-orange-500 text-white p-4 rounded-full shadow-lg">
                 <FaHeart size={20} />
@@ -43,7 +42,7 @@ const Values = () => {
 
             <motion.div
               whileHover={{ scale: 1.05 }}
-              className="flex items-center gap-4"
+              className="flex items-center gap-4 cursor-pointer"
             >
               <div className="bg-orange-500 text-white p-4 rounded-full shadow-lg">
                 <GiFruitBowl size={20} />
@@ -74,7 +73,7 @@ const Values = () => {
 
             <motion.div
               whileHover={{ scale: 1.05 }}
-              className="flex items-center gap-4"
+              className="flex items-center gap-4 cursor-pointer"
             >
               <div className="bg-orange-500 text-white p-4 rounded-full shadow-lg">
                 <FaShieldAlt size={20} />
@@ -89,7 +88,7 @@ const Values = () => {
 
             <motion.div
               whileHover={{ scale: 1.05 }}
-              className="flex items-center gap-4"
+              className="flex items-center gap-4 cursor-pointer"
             >
               <div className="bg-orange-500 text-white p-4 rounded-full shadow-lg">
                 <FaLeaf size={20} />

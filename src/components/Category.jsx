@@ -35,8 +35,7 @@ const Category = () => {
           {data.map((item, index) => (
             <div
               key={index}
-              onClick={() => handleClick(item.title)}
-              className="group relative bg-white rounded-xl shadow-md overflow-hidden cursor-pointer transition duration-300 hover:shadow-2xl hover:-translate-y-2"
+              className="group relative bg-white rounded-xl shadow-md overflow-hidden transition duration-300 hover:shadow-2xl hover:-translate-y-2"
             >
 
               {/* IMAGE */}
@@ -60,7 +59,10 @@ const Category = () => {
 
               {/* HOVER BUTTON */}
               <div className="absolute bottom-5 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition duration-300">
-                <button className="bg-orange-500 text-white px-5 py-2 rounded-md shadow-md">
+                <button
+                  onClick={() => handleClick(item.title)}
+                  className="bg-orange-500 text-white px-5 py-2 rounded-md shadow-md cursor-pointer hover:bg-orange-600 transition"
+                >
                   Explore →
                 </button>
               </div>

@@ -93,7 +93,7 @@ const Card = ({ item }) => {
       whileHover={{ scale: 1.05, rotateX: 5, rotateY: -5 }}
       transition={{ type: "spring", stiffness: 200 }}
       className="min-w-[280px] md:min-w-[320px] backdrop-blur-lg bg-white/40 border border-white/30 
-      rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300"
+      rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer"
     >
 
       {/* TOP */}
@@ -125,9 +125,9 @@ const Card = ({ item }) => {
       </p>
 
       {/* 🔥 LABEL */}
-      <p className="text-xs text-orange-500 mt-4 font-semibold uppercase tracking-wide">
+      {/* <p className="text-xs text-orange-500 mt-4 font-semibold uppercase tracking-wide">
         Verified Customer Review
-      </p>
+      </p> */}
 
     </motion.div>
   );
