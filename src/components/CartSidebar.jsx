@@ -44,14 +44,14 @@ const CartSidebar = ({ open, setOpen }) => {
             <p>Cart is empty</p>
           ) : (
             cart.map((item) => (
-              <div key={item.id} className="mb-4 border-b pb-3">
+              <div key={item.id} className=" mb-4 border-b pb-3">
 
                 <h3>{item.name}</h3>
 
-                <div className="flex gap-3 mt-2">
+                <div className=" cursor-pointer flex gap-3 mt-2">
                   <button
                     onClick={() => removeFromCart(item.id)}
-                    className="px-2 bg-gray-200 rounded"
+                    className=" cursor-pointer px-2 bg-gray-200 rounded"
                   >
                     -
                   </button>
@@ -60,7 +60,7 @@ const CartSidebar = ({ open, setOpen }) => {
 
                   <button
                     onClick={() => addToCart(item)}
-                    className="px-2 bg-gray-200 rounded"
+                    className=" cursor-pointer px-2 bg-gray-200 rounded"
                   >
                     +
                   </button>
@@ -97,7 +97,7 @@ const CartSidebar = ({ open, setOpen }) => {
           {/* 🔥 CHECKOUT BUTTON */}
           <button
             onClick={handleCheckout}
-            className="w-full mt-4 bg-orange-500 text-white py-3 rounded-lg hover:bg-orange-600 transition"
+            className=" cursor-pointer w-full mt-4 bg-orange-500 text-white py-3 rounded-lg hover:bg-orange-600 transition"
           >
             Checkout
           </button>

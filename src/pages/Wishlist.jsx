@@ -74,7 +74,7 @@ const Wishlist = () => {
                     {/* 🗑 REMOVE */}
                     <button
                       onClick={() => removeFromWishlist(item.id)}
-                      className="text-red-500 text-lg hover:scale-110 transition"
+                      className=" cursor-pointer text-red-500 text-lg hover:scale-110 transition"
                     >
                       <FaTrash />
                     </button>
@@ -83,7 +83,7 @@ const Wishlist = () => {
                     {quantity === 0 ? (
                       <button
                         onClick={() => handleAdd(item)}
-                        className="bg-green-200 text-green-800 px-4 py-2 rounded-md font-semibold hover:bg-green-300 transition"
+                        className=" cursor-pointer bg-green-200 text-green-800 px-4 py-2 rounded-md font-semibold hover:bg-green-300 transition"
                       >
                         ADD
                       </button>

@@ -24,13 +24,8 @@ import shrimp from "../assets/shrimp (1).png";
 import tofu from "../assets/tofu (1).png";
 
 const Products = () => {
-  const {
-    addToCart,
-    removeFromCart,
-    addToWishlist,
-    cart,
-    wishlist,
-  } = useContext(CartContext);
+  const { addToCart, removeFromCart, addToWishlist, cart, wishlist } =
+    useContext(CartContext);
 
   const location = useLocation();
 
@@ -46,7 +41,13 @@ const Products = () => {
     { id: 3, name: "Grapes", price: 80, img: grapes, category: "fruits" },
     { id: 4, name: "Kiwi", price: 120, img: kiwi, category: "fruits" },
     { id: 5, name: "Pineapple", price: 90, img: pineapple, category: "fruits" },
-    { id: 6, name: "Strawberry", price: 150, img: strawberry, category: "fruits" },
+    {
+      id: 6,
+      name: "Strawberry",
+      price: 150,
+      img: strawberry,
+      category: "fruits",
+    },
 
     { id: 20, name: "Milk", price: 60, img: milk, category: "dairy" },
     { id: 21, name: "Cheese", price: 120, img: cheese, category: "dairy" },
@@ -70,23 +71,21 @@ const Products = () => {
 
   if (search) {
     filtered = filtered.filter((item) =>
-      item.name.toLowerCase().includes(search)
+      item.name.toLowerCase().includes(search),
     );
   }
 
   return (
     <div className="max-w-[1400px] mx-auto px-6 py-16">
-
       <h1 className="text-3xl font-bold mb-10 capitalize">
         {search
           ? `Search Results for "${search}"`
           : category
-          ? category
-          : "All Products"}
+            ? category
+            : "All Products"}
       </h1>
 
       <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-8">
-
         {filtered.length > 0 ? (
           filtered.map((item) => {
             const cartItem = cart.find((p) => p.id === item.id);
@@ -107,12 +106,9 @@ const Products = () => {
                 />
 
                 <h3 className="font-bold text-lg">{item.name}</h3>
-                <p className="text-orange-500 font-semibold">
-                  ₹{item.price}
-                </p>
+                <p className="text-orange-500 font-semibold">₹{item.price}</p>
 
                 <div className="flex justify-between mt-4">
-
                   {/* ❤️ FIXED HEART */}
                   <FaHeart
                     className={`cursor-pointer text-lg ${
@@ -126,30 +122,40 @@ const Products = () => {
                   {quantity === 0 ? (
                     <button
                       onClick={() => addToCart(item)}
-                      className="bg-green-200 text-green-800 px-4 py-2 rounded-md font-semibold"
+                      className="cursor-pointer bg-green-200 text-green-800 px-4 py-2 rounded-md font-semibold 
+               hover:bg-green-300 hover:scale-105 active:scale-95 
+               transition-all duration-200"
                     >
                       ADD
                     </button>
                   ) : (
                     <div className="flex items-center gap-3 bg-green-200 text-green-900 px-3 py-2 rounded-md font-semibold">
-                      <button onClick={() => removeFromCart(item.id)}>
+                      <button
+                        onClick={() => removeFromCart(item.id)}
+                        className="cursor-pointer px-2 py-1 rounded-md hover:bg-green-300 active:scale-90 transition"
+                      >
                         -
                       </button>
-                      <span>{quantity}</span>
-                      <button onClick={() => addToCart(item)}>+</button>
+
+                      <span className="min-w-[20px] text-center">
+                        {quantity}
+                      </span>
+
+                      <button
+                        onClick={() => addToCart(item)}
+                        className="cursor-pointer px-2 py-1 rounded-md hover:bg-green-300 active:scale-90 transition"
+                      >
+                        +
+                      </button>
                     </div>
                   )}
-
                 </div>
               </div>
             );
           })
         ) : (
-          <p className="col-span-4 text-center text-lg">
-            No products found 😢
-          </p>
+          <p className="col-span-4 text-center text-lg">No products found 😢</p>
         )}
-
       </div>
     </div>
   );

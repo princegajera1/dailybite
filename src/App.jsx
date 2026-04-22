@@ -15,15 +15,15 @@ import Footer from "./components/Footer";
 import Products from "./pages/Products";
 import Cart from "./pages/Cart";
 import Wishlist from "./pages/Wishlist";
-import Checkout from "./pages/Checkout";
+import Checkout from "./pages/Checkout"; // ✅ Only from pages (removed duplicate)
+import Payment from "./pages/Payment"; // ✅ Moved to top (was inside JSX before)
 
-// 🔥 NEW PAGES (Footer links)
+// 🔥 FOOTER PAGES
 import About from "./pages/About";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
 import Contact from "./pages/Contact";
 import Partnership from "./pages/Partnership";
-import Payment from "./pages/Payment";
 
 // CONTEXT
 import CartProvider from "./context/CartContext";
@@ -51,6 +51,7 @@ function App() {
               </>
             }
           />
+
           {/* MAIN PAGES */}
           <Route
             path="/products"
@@ -61,6 +62,7 @@ function App() {
               </>
             }
           />
+
           <Route
             path="/cart"
             element={
@@ -70,6 +72,7 @@ function App() {
               </>
             }
           />
+
           <Route
             path="/wishlist"
             element={
@@ -79,6 +82,8 @@ function App() {
               </>
             }
           />
+
+          {/* ✅ CHECKOUT PAGE */}
           <Route
             path="/checkout"
             element={
@@ -88,7 +93,8 @@ function App() {
               </>
             }
           />
-          import Payment from "./pages/Payment";
+
+          {/* ✅ PAYMENT PAGE */}
           <Route
             path="/payment"
             element={
@@ -98,6 +104,7 @@ function App() {
               </>
             }
           />
+
           {/* FOOTER PAGES */}
           <Route
             path="/about"
@@ -108,6 +115,7 @@ function App() {
               </>
             }
           />
+
           <Route
             path="/privacy"
             element={
@@ -117,6 +125,7 @@ function App() {
               </>
             }
           />
+
           <Route
             path="/terms"
             element={
@@ -126,6 +135,7 @@ function App() {
               </>
             }
           />
+
           <Route
             path="/contact"
             element={
@@ -135,6 +145,7 @@ function App() {
               </>
             }
           />
+
           <Route
             path="/partnership"
             element={

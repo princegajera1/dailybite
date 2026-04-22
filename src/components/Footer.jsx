@@ -69,7 +69,9 @@ const Footer = () => {
           <p className="text-gray-600 mb-2">
             Email:
             <a
-              href="mailto:support@dailybite.com"
+              href="https://mail.google.com/mail/?view=cm&fs=1&to=support@dailybite.com"
+              target="_blank"
+              rel="noopener noreferrer"
               className="text-blue-500 hover:underline ml-1"
             >
               support@dailybite.com

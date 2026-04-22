@@ -13,10 +13,53 @@ const Cart = () => {
 
   const navigate = useNavigate();
 
+  // 🔥 TOTAL
   const total = cart.reduce(
     (acc, item) => acc + item.price * item.qty,
     0
   );
+
+  // 🔥 DISCOUNT 20%
+  const discount = total * 0.2;
+
+  // 🔥 FINAL TOTAL
+  const finalTotal = total - discount;
+
+  // 💳 PAYMENT FUNCTION
+  const handlePayment = () => {
+    if (cart.length === 0) {
+      alert("Cart is empty ❌");
+      return;
+    }
+
+    const options = {
+      key: "rzp_test_1234567890",
+      amount: finalTotal * 100,
+      currency: "INR",
+      name: "Daily Bite",
+      description: "Order Payment",
+      image: "/logo.png",
+
+      handler: function (response) {
+        alert("Payment Successful ✅");
+        console.log(response);
+        navigate("/");
+      },
+
+      prefill: {
+        name: "Prince",
+        email: "support@dailybite.com",
+        contact: "9876543210",
+      },
+
+      theme: {
+        color: "#f97316",
+      },
+    };
+
+    const rzp = new window.Razorpay(options);
+    rzp.open();
+  };
 
   return (
     <section className="bg-[#f5f5f5] min-h-screen py-16">
@@ -120,19 +163,28 @@ const Cart = () => {
               </div>
 
               <div className="flex justify-between mb-2">
-                <span>Total</span>
-                <span className="font-bold text-orange-500">
-                  ₹{total}
-                </span>
+                <span>Subtotal</span>
+                <span>₹{total}</span>
+              </div>
+
+              <div className="flex justify-between mb-2 text-green-600">
+                <span>Discount (20%)</span>
+                <span>- ₹{discount}</span>
               </div>
 
               <hr className="my-4" />
 
+              <div className="flex justify-between mb-4 font-bold text-lg">
+                <span>Total</span>
+                <span>₹{finalTotal}</span>
+              </div>
+
+              {/* 🔥 CHECKOUT → PAYMENT */}
               <button
-                onClick={() => navigate("/checkout")}
-                className="w-full bg-orange-500 text-white py-3 rounded-md font-semibold hover:bg-orange-600 transition"
+                onClick={handlePayment}
+                className="cursor-pointer  w-full bg-orange-500 text-white py-3 rounded-md font-semibold hover:bg-orange-600 transition"
               >
-                Proceed to Checkout
+                Checkout
               </button>
 
             </div>
