@@ -3,21 +3,19 @@ const Razorpay = require("razorpay");
 const cors = require("cors");
 
 const app = express();
-app.use(cors());                        // ✅ Allow React to connect
-app.use(express.json());               // ✅ Read JSON from React
+app.use(cors());
+app.use(express.json());
 
-// 🔑 YOUR RAZORPAY KEYS
 const razorpay = new Razorpay({
-  key_id: "rzp_test_SgWgGypiPrFeQ3",
-  key_secret: "BV2xSadujvKzCBW4mdsFNHdf",  // ⚠️ Regenerate this key!
+  key_id: "rzp_test_SgXz3KR2UWdXQ0",        // ✅ તારી નવી key
+  key_secret: "BN0vwAYmjmxk6SYLyTN82vwD",   // ✅ તારી નવી secret (પૂરી key મૂક)
 });
 
-// 📦 CREATE ORDER ROUTE
 app.post("/create-order", async (req, res) => {
   const { amount } = req.body;
 
   const options = {
-    amount: Math.round(amount * 100),  // convert ₹ to paisa
+    amount: Math.round(amount * 100),
     currency: "INR",
     receipt: `receipt_${Date.now()}`,
   };
@@ -32,7 +30,6 @@ app.post("/create-order", async (req, res) => {
   }
 });
 
-// ▶️ START SERVER
 app.listen(5000, () => {
   console.log("🚀 Server running at http://localhost:5000");
 });
