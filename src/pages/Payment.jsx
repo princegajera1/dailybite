@@ -6,19 +6,11 @@ const Payment = () => {
   const { cart } = useContext(CartContext);
   const navigate = useNavigate();
 
-  // 🧾 TOTAL
   const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
-
-  // 💸 DISCOUNT
   const discount = total * 0.2;
-
-  // 💰 FINAL TOTAL
-  const finalTotal = Math.round(total - discount); // ✅ rounded
-
-  // 🔥 UPI QR LINK
+  const finalTotal = Math.round(total - discount);
   const upiLink = `upi://pay?pa=example@upi&pn=DailyBite&am=${finalTotal}&cu=INR`;
 
-  // 💳 RAZORPAY PAYMENT
   const handlePayment = async () => {
     if (cart.length === 0) {
       alert("❌ Cart is empty!");
@@ -26,18 +18,13 @@ const Payment = () => {
     }
 
     try {
-      console.log("📡 Connecting to backend...");
-
-      const res = await fetch("http://127.0.0.1:5000/create-order", {
+      const res = await fetch("https://dailybite-backend-4t3g.onrender.com/create-order", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ amount: finalTotal }),
       });
 
       const order = await res.json();
-      console.log("✅ Order Created:", order);
 
       if (!order.id) {
         alert("❌ Order not created. Check backend.");
@@ -45,7 +32,7 @@ const Payment = () => {
       }
 
       const options = {
-        key: "rzp_test_SgWgGypiPrFeQ3",   // ✅ your test key
+        key: "rzp_test_SgXz3KR2UWdXQ0",
         amount: order.amount,
         currency: "INR",
         name: "Daily Bite",
@@ -54,8 +41,7 @@ const Payment = () => {
 
         handler: function (response) {
           alert("✅ Payment Successful! 🎉");
-          console.log("Payment Response:", response);
-          navigate("/"); // ✅ redirect to home after payment
+          navigate("/");
         },
 
         prefill: {
@@ -65,7 +51,7 @@ const Payment = () => {
         },
 
         theme: {
-          color: "#22c55e", // green
+          color: "#22c55e",
         },
       };
 
@@ -74,7 +60,7 @@ const Payment = () => {
 
     } catch (err) {
       console.error("❌ ERROR:", err);
-      alert("❌ Backend not running! Start your Flask server first.");
+      alert("❌ Payment failed! Please try again.");
     }
   };
 
@@ -82,15 +68,13 @@ const Payment = () => {
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 px-6">
       <h1 className="text-3xl font-bold mb-6">Payment Options</h1>
 
-      {/* 💳 RAZORPAY BUTTON */}
       <button
         onClick={handlePayment}
-        className=" cursor-pointer mb-6 bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg font-semibold"
+        className="cursor-pointer mb-6 bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg font-semibold"
       >
         Pay with Razorpay 💳
       </button>
 
-      {/* 📱 QR BOX */}
       <div className="bg-white p-6 rounded-xl shadow-md text-center">
         <img
           src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${upiLink}`}
